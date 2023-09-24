@@ -1,14 +1,13 @@
-import express, {json} from "express"
-
+import express, { json } from "express";
+import { signin } from "./routes/signin";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 
-app.use(json())
+app.use(json());
 
+app.use(signin);
 
-app.get('/api/users/currentuser',(req,res)=>{
-    res.send('welcome')
-})
-
+app.use(errorHandler);
 
 export default app;
