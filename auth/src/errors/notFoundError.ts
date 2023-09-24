@@ -7,7 +7,7 @@ export class NotFoundError extends CustomError {
     super();
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
-  output() {
-    return [{ message: `Can't find this route ${this.req.originalUrl}` }];
+  output(): { message: string }[] {
+    return [{ message: `${this.req.originalUrl} is not defined` }];
   }
 }

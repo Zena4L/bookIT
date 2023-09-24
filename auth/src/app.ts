@@ -9,10 +9,9 @@ app.use(json());
 
 app.use(signin);
 
-app.use(globalError);
-
 app.all("*", (req, res, next) => {
   throw new NotFoundError(req);
 });
+app.use(globalError);
 
 export default app;
