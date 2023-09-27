@@ -1,6 +1,8 @@
 import express, { json } from "express";
 import { signup } from "./routes/signup";
 import { signin } from "./routes/signin";
+import { signout } from "./routes/signout";
+import { currentuser } from "./routes/currentuser";
 import { globalError } from "./middlewares/globalError";
 import { NotFoundError } from "./errors/notFoundError";
 import cookieSession from "cookie-session";
@@ -21,6 +23,8 @@ app.use(
 
 app.use(signup);
 app.use(signin);
+app.use(signout);
+app.use(currentuser);
 
 app.all("*", (req, res, next) => {
   return next(new NotFoundError(req));
