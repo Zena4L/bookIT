@@ -3,6 +3,11 @@ import { createServer } from "http";
 import mongoose from "mongoose";
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("No jwt key");
+    process.exit(1);
+  }
+
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Database Connected");

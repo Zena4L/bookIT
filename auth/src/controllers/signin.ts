@@ -1,24 +1,36 @@
 import { RequestHandler } from "express";
-import { validationResult } from "express-validator";
-import { RequestValidationError } from "../errors/requestValidationError";
 import User from "../models/user";
 import { BadRequestError } from "../errors/badRequestError";
+import { Password } from "../utilis/password";
+import jwt from "jsonwebtoken";
 
 export const signin: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new RequestValidationError(errors.array()));
-  }
 
   const existingUser = await User.findOne({ email });
 
-  if (existingUser) {
-    return next(new BadRequestError("This Email already exist"));
+  if (!existingUser) {
+    return next(new BadRequestError("Invalid email or password"));
   }
 
-  const user = User.build({ email, password });
-  await user.save();
+  const correctPassword = await Password.compare(
+    existingUser.password,
+    password
+  );
+  if (!correctPassword) {
+    return next(new BadRequestError("Invalid email or password"));
+  }
 
-  res.status(200).send(user);
+  const userJwt = jwt.sign(
+    {
+      id: existingUser.id,
+      email: existingUser.email,
+    },
+    process.env.JWT_KEY!
+  );
+
+  req.session = {
+    jwt: userJwt,
+  };
+  res.status(200).send(existingUser);
 };
