@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import User from "../models/user";
-import { BadRequestError } from "../errors/badRequestError";
+import { BadRequestError } from "@zetonticket/resources";
 import { Password } from "../utilis/password";
 import jwt from "jsonwebtoken";
 

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { signup } from "../controllers/signup";
 import { body } from "express-validator";
-import { requestValidation } from "../middlewares/requestValidation";
+import { requestValidation } from "@zetonticket/resources";
 
 const router = Router();
 

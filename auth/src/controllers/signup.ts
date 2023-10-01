@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
-import { RequestValidationError } from "../errors/requestValidationError";
+import { RequestValidationError } from "@zetonticket/resources";
 import User from "../models/user";
-import { BadRequestError } from "../errors/badRequestError";
+import { BadRequestError } from "@zetonticket/resources";
 import jwt from "jsonwebtoken";
 
 export const signup: RequestHandler = async (req, res, next) => {
