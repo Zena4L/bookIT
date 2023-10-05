@@ -1,13 +1,13 @@
 import express, { json } from "express";
+import { createTicket } from "./routes/new";
 import { NotFoundError, globalError } from "@zetonticket/resources";
+import "express-async-errors";
 
 const app = express();
 
 app.use(json());
 
-app.get("/api/ticket/home", (req, res, next) => {
-  res.status(200).send("Hi");
-});
+app.use(createTicket);
 
 app.all("*", (req, res, next) => {
   return next(new NotFoundError(req));
