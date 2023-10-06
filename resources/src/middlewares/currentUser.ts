@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 interface Payload {
   id: string;
@@ -16,12 +16,15 @@ declare global {
 
 export const currentUser: RequestHandler = (req, res, next) => {
   if (!req.session?.jwt) {
-    next();
+    return next();
   }
+
   try {
-    const payload = verify(req.session?.jwt, process.env.JWT_KEY!) as Payload;
+    const payload = jwt.verify(
+      req.session.jwt,
+      process.env.JWT_KEY!
+    ) as Payload;
     req.currentUser = payload;
-    console.log(req.currentUser);
   } catch (err) {
     console.log(err);
   }
