@@ -21,10 +21,11 @@ export const currentUser: RequestHandler = (req, res, next) => {
 
   try {
     const payload = jwt.verify(
-      req.session.jwt,
+      req.session?.jwt,
       process.env.JWT_KEY!
     ) as Payload;
     req.currentUser = payload;
+    console.log(req.currentUser);
   } catch (err) {
     console.log(err);
   }
