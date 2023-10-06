@@ -11,8 +11,8 @@ it("can only be accessed if the user is signed in", async () => {
 it("returns a status other than 401 if user is signed in", async () => {
   const response = await request(app)
     .post("/api/ticket")
-    .set("Authorization", `Bearer ${global.signin()}`)
+    .set("Cookie", global.signin())
     .send({});
-  console.log(response.status);
+  console.log(response.get("Set-Cookie"));
   expect(response.status).not.toEqual(401);
 });

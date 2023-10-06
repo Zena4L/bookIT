@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { createTicket } from "../controllers/new";
-import { requireAuth } from "@zetonticket/resources";
-
+import { notAuthorized } from "@zetonticket/resources";
 const router = Router();
 
-router.post("/api/ticket", requireAuth, createTicket);
+router.post("/api/ticket", notAuthorized, createTicket);
 
 export { router as createTicket };

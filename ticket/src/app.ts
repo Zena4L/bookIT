@@ -1,10 +1,15 @@
 import express, { json } from "express";
 import { createTicket } from "./routes/new";
-import { NotFoundError, globalError } from "@zetonticket/resources";
+import {
+  NotFoundError,
+  globalError,
+  currentUser,
+} from "@zetonticket/resources";
 import cookieSession from "cookie-session";
 import "express-async-errors";
 
 const app = express();
+app.set("trust proxy", true);
 
 app.use(json());
 app.use(
@@ -13,6 +18,7 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+app.use(currentUser);
 
 app.use(createTicket);
 
