@@ -7,4 +7,4 @@ export * from "./errors/requireAuth";
 export * from "./middlewares/currentUser";
 export * from "./middlewares/globalError";
 export * from "./middlewares/requestValidation";
-export * from "./middlewares/requireAuth";
+export * from "./middlewares/notAuthorized";
