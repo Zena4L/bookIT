@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import { createTicket } from "./routes/new";
+import { showTicket } from "./routes/show";
 import {
   NotFoundError,
   globalError,
@@ -23,6 +24,7 @@ app.use(
 app.use(currentUser);
 
 app.use(createTicket);
+app.use(showTicket);
 
 app.all("*", (req, res, next) => {
   return next(new NotFoundError(req));

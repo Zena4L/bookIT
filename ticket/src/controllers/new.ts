@@ -1,6 +1,12 @@
 import { RequestHandler } from "express";
+import Ticket from "../models/new";
 
 export const createTicket: RequestHandler = async (req, res, next) => {
-  console.log(req.session);
-  res.status(200).send("hello");
+  const { title, price } = req.body;
+  const ticket = Ticket.build({
+    title: "newTicket",
+    price: 10,
+  });
+  await ticket.save();
+  res.status(201).send(ticket);
 };
