@@ -13,6 +13,5 @@ it("returns a status other than 401 if user is signed in", async () => {
     .post("/api/ticket")
     .set("Cookie", global.signin())
     .send({});
-  console.log(response.get("Set-Cookie"));
   expect(response.status).not.toEqual(401);
 });
