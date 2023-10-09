@@ -1,4 +1,5 @@
-import nats, { Message } from "node-nats-streaming";
+import nats from "node-nats-streaming";
+import { TicketCreatedListener } from "./events/ticket-created-event";
 
 import { randomBytes } from "crypto";
 
@@ -8,26 +9,13 @@ const stan = nats.connect("bookit", randomBytes(4).toString("hex"), {
   url: "http://localhost:4222",
 });
 
-const options = stan
-  .subscriptionOptions()
-  .setManualAckMode(true)
-  .setDeliverAllAvailable()
-  .setDurableName("bookit");
 stan.on("connect", () => {
   console.log("listener is on");
   stan.on("close", () => {
     console.log("Listenner is shuting down");
     process.exit();
   });
-  const subscription = stan.subscribe("message:created", options);
-  subscription.on("message", (msg: Message) => {
-    console.log(
-      `Event No# : ${msg.getSequence()},
-      Data: ${msg.getData()}
-      `
-    );
-    msg.ack();
-  });
+  new TicketCreatedListener(stan).listen();
 });
 
 process.on("SIGINT", () => stan.close());
