@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../../app";
 import Ticket from "../../models/new";
+import { natsWrapper } from "../../__mock__/nats-wrapper";
 
 it("has a route handler for /api/ticket", async () => {
   const response = await request(app).post("/api/ticket").send();
@@ -45,4 +46,16 @@ it("creates a ticket with a valid inpits", async () => {
 
   tickets = await Ticket.find({});
   expect(tickets.length).toEqual(1);
+});
+
+it("publishes an event", async () => {
+  await request(app)
+    .post("/api/ticket")
+    .send({
+      title: "firstticket",
+      price: 20,
+    })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
